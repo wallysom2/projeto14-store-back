@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import mongo from '../db/db.js';
 import { v4 as uuid } from 'uuid';
+import { signUpSchema, signInSchema } from '../schemas/authSchema.js';
 
 async function signUp(req,res) {
 
@@ -45,16 +46,17 @@ async function signIn(req,res) {
         const isValidPass = bcrypt.compareSync (password, user.password);
 
          if (!user || !isValidPass) {
-        return res.status(401).send("Dados invalidos");
+            return res.status(401).send("Dados invalidos");
         }
 
         const token = uuid();
-        mongo.collection('sessions').insertOne({
-        userId: user._id,
-        token,
+            mongo.collection('sessions').insertOne({
+            userId: user._id,
+            token,
         });
         return res.send (token);
     } 
+
     catch (error){
         console.log(error);
         return res.send (500)
