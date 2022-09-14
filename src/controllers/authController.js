@@ -59,7 +59,7 @@ async function signIn(req,res) {
 
     catch (error){
         console.log(error);
-        return res.send (500)
+        return res.res.sendStatus (500)
     }
 }
 

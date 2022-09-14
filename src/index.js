@@ -12,7 +12,7 @@ server.use(express.json());
 
 server.use(authRoutes);
 
-const port = process.env.PORT_API || 5000;
+const port = process.env.PORT_API;
 
 server.listen (port, () => {
     console.log(`Server is running on port ${port}.`)

@@ -12,6 +12,6 @@ try {
   console.log(error);
 }
 
-db = mongoClient.db('mywalley');
+db = mongoClient.db('TechZone');
 
 export default db;
