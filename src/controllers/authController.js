@@ -31,10 +31,34 @@ async function signIn(req,res) {
 
     const isValid = signInSchema.validate({
         email, password
-    )};
+    });
 
-    const isValidPass = bcrypt.compareSync (password, user.password);
-
-    if (!user || !isValidPass) {
-        return res.send(STATUS_CODE.UNAUTHORIZED);
+    if (isValid.error) {
+        return res.send(400);
       }
+
+    try {
+        const user = await mongo.collection('users').findOne({
+          email,
+        });
+
+        const isValidPass = bcrypt.compareSync (password, user.password);
+
+         if (!user || !isValidPass) {
+        return res.status(401).send("Dados invalidos");
+        }
+
+        const token = uuid();
+        mongo.collection('sessions').insertOne({
+        userId: user._id,
+        token,
+        });
+        return res.send (token);
+    } 
+    catch (error){
+        console.log(error);
+        return res.send (500)
+    }
+}
+
+export { signUp, signIn };
