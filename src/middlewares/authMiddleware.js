@@ -4,7 +4,7 @@ async function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.replace('Bearer ', '');
 
   if (!token) {
-    return res.send(400);
+    return res.status(400);
   }
 
   try {
@@ -13,7 +13,7 @@ async function authMiddleware(req, res, next) {
     });
 
     if (!session) {
-      return res.send(401);
+      return res.status(401);
     }
 
     const user = await mongo.collection('users').findOne({
@@ -25,7 +25,7 @@ async function authMiddleware(req, res, next) {
     next();
   } catch (error) {
     console.log(error);
-    return res.send(500);
+    return res.status(500);
   }
 }
 
